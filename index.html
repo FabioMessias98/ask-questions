@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Controle de Perguntas</title>
+        <link rel="stylesheet" type="text/css" href="assets/css/app.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body class="relative bg-gray-800">
+        <audio id="soundNotification" loop>
+            <source src="assets/sounds/notification.ogg" type="audio/ogg">
+            <source src="assets/sounds/notification.mp3" type="audio/mp3">
+            Seu navegador não possui suporte ao elemento audio
+        </audio>
+
+        <!-- progress bar -->
+        <div class="w-full h-2 top-0 lef-0 fixed hidden bg-red-500 js-progress-bar"></div>
+        <!-- end progress bar -->
+
+        <section class="w-full h-screen bg-gray-800 pt-10 xl:pt-32">
+
+            <div class="container flex flex-wrap justify-center">
+
+                <div class="w-full xl:w-6/12 order-2 xl:order-1">
+
+                    <div class="l-box-questions bg-gray-500/10 py-4 xl:p-4 js-box-questions">
+
+                        <div class="flex">
+
+                            <div class="w-8/12 mb-4 pl-8">
+                                <p class="font-bold text-white">
+                                    Perguntas
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="js-box-questions">
+                        
+                            <div class="flex flex-wrap">
+
+                                <div class="w-8/12 mb-4 px-4">
+                                    <input 
+                                    class="w-full outline-0 rounded-lg shadow-xl block font-normal py-2 px-4 js-question"
+                                    type="text"
+                                    name="question[]"
+                                    placeholder="Perguntar...">
+                                </div>
+
+                                <div class="w-4/12 flex items-center mb-4 pr-4 xl:px-4">
+                                    <select 
+                                    class="w-full h-full outline-0 rounded-lg shadow-xl font-semibold text-center px-1 xl:px-4 js-time" 
+                                    name="time[]">
+                                        <option class="font-semibold" value="1" selected>1</option>
+                                        <option class="font-semibold" value="2">2</option>
+                                        <option class="font-semibold" value="3">3</option>
+                                        <option class="font-semibold" value="4">4</option>
+                                        <option class="font-semibold" value="5">5</option>
+                                        <option class="font-semibold" value="10">10</option>
+                                        <option class="font-semibold" value="15">15</option>
+                                        <option class="font-semibold" value="20">20</option>
+                                        <option class="font-semibold" value="25">25</option>
+                                        <option class="font-semibold" value="30">30</option>
+                                        <option class="font-semibold" value="35">35</option>
+                                        <option class="font-semibold" value="40">40</option>
+                                        <option class="font-semibold" value="45">45</option>
+                                        <option class="font-semibold" value="50">50</option>
+                                        <option class="font-semibold" value="55">55</option>
+                                        <option class="font-semibold" value="60">60</option>
+                                    </select>
+
+                                    <p class="font-bold text-white pl-4">
+                                        min
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-8/12 xl:w-2/12 order-1 xl:order-2 mb-4 px-4">
+                    <p class="text-sm font-medium text-center text-white mb-2">
+                        Adicionar + perguntas
+                    </p>
+
+                    <div class="w-full h-10 rounded-lg shadow-xl overflow-hidden flex justify-center items-center text-2xl font-bold text-gray-500 hover:text-white bg-white hover:bg-gray-500 cursor-pointer js-btn-plus">
+                        +
+                    </div>
+                </div>
+
+                <div class="w-full xl:w-3/12 order-3 block mt-8 xl:mt-0 px-4">
+
+                    <div class="rounded-lg shadow-xl bg-gray-100 p-4">
+
+                        <div class="flex flex-wrap ">
+                            
+                            <div class="w-8/12 pr-4">
+                                <p class="text-lg font-bold text-gray-800 mb-4">
+                                    Pergunta(s)
+                                </p>
+                            </div>
+
+                            <div class="w-4/12">
+                                <p class="text-lg font-bold text-gray-800 mb-4">
+                                    Tempo
+                                </p>
+                            </div>
+
+                            <div class="w-8/12 pr-4">
+                                <div class="js-list-questions">
+                                </div>
+                            </div>
+
+                            <div class="w-4/12">
+                                <div class="js-list-times">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- notification -->
+        <div class="w-40 bottom-20 right-4 rounded-lg shadow-xl fixed hidden font-semibold bg-white p-4 js-notification">
+            Começando...
+        </div>
+        <!-- end notification -->
+
+        <div class="w-full h-16 bottom-0 left-0 fixed bg-gray-900 hover:bg-gray-700 cursor-pointer py-4">
+            <button
+            class="w-full block text-xl xl:text-3xl font-bold text-center text-white js-button-start"
+            type="button">
+                Começar
+            </button>
+        </div>
+
+        <!-- modal -->
+        <div class="w-full h-[calc(100%-1rem)] max-h-full top-0 left-0 right-0 md:inset-0 fixed hidden justify-center items-center overflow-y-auto overflow-x-hidden bg-gray-800/50 z-50 p-4 js-modal">
+            
+            <div class="relative w-full max-w-2xl max-h-full">
+               
+                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                   
+                    <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                            Pergunta
+                        </h3>
+
+                        <button  
+                        class="ml-auto rounded-lg inline-flex items-center text-sm text-gray-400 hover:text-gray-900 dark:hover:text-white bg-transparent hover:bg-gray-200  dark:hover:bg-gray-600 p-1.5 js-modal-close"
+                        type="button">
+                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                            <span class="sr-only">Close modal</span>
+                        </button>
+                    </div>
+                  
+                    <div class="py-6 px-2 xl:px-6 space-y-6">
+                        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400 js-modal-question">
+                            Pergunta tal...
+                        </p>
+
+                        <textarea class="w-full rounded-lg shadow-xl p-4" placeholder="Mensagem..."></textarea>
+                    </div>
+                   
+                    <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                        <button  
+                        class="focus:outline-none rounded-lg text-sm font-medium text-white bg-red-500 hover:bg-red-400 px-5 py-2.5 js-modal-close"
+                        type="button">
+                            Fechar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end modal -->
+
+        <script src="assets/js/app.js"></script>
+    </body>
+</html>
